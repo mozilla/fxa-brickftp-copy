@@ -1,0 +1,23 @@
+{
+  "name": "fxa-brickftp-copy",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mozilla/fxa-brickftp-copy.git"
+  },
+  "author": "",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/mozilla/fxa-brickftp-copy/issues"
+  },
+  "homepage": "https://github.com/mozilla/fxa-brickftp-copy#readme",
+  "dependencies": {
+    "aws-sdk": "^2.264.1",
+    "ssh2-sftp-client": "^2.2.1"
+  }
+}
