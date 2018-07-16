@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build-docker-image": "docker build -t mozilla/fxa-brickftp-copy:`git describe` .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
