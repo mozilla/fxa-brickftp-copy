@@ -10,6 +10,7 @@ const host = 'mozilla.brickftp.com';
 const port = 22;
 const username = process.env.SFTP_USERNAME;
 const password = process.env.SFTP_PASSWORD;
+const private_key = process.env.SFTP_PRIVATE_KEY ? Buffer.from(process.env.SFTP_PRIVATE_KEY, 'base64') : null;
 
 (async () => {
   let S3 = new AWS.S3({
@@ -39,7 +40,8 @@ const password = process.env.SFTP_PASSWORD;
       host: host,
       port: 22,
       username: username,
-      password: password
+      password: password,
+      privateKey: private_key,
   });
   let sftp_file_list = await sftp.list('/etl/deg-exacttarget');
 
