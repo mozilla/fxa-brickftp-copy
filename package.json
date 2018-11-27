@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/mozilla/fxa-brickftp-copy#readme",
   "dependencies": {
-    "aws-sdk": "^2.264.1",
-    "ssh2-sftp-client": "^2.3.1"
+    "aws-sdk": "^2.363.0",
+    "ssh2-sftp-client": "^2.4.2"
   }
 }
