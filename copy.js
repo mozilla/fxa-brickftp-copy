@@ -1,5 +1,8 @@
 const AWS = require('aws-sdk');
 const Client = require('ssh2-sftp-client');
+const fs = require('fs');
+const os = require('os');
+const path = require('path')
 
 const s3_bucket = process.env.S3_BUCKET;
 const s3_prefix = 'files/';
@@ -53,21 +56,30 @@ const dry_run = process.argv[2] == "--dry-run";
 
   console.log(files_to_download.map(f => f.name));
 
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fxa-brickftp-copy'));
+
   for (let file of files_to_download) {
-    console.log('Writing %d bytes to s3://%s/files/%s', file.size, s3_bucket, file.name);
+    console.log(`Writing ${file.size} bytes to s3://${s3_bucket}/files/${file.name}`);
     if (dry_run) {
       continue;
     }
 
-    let rs = await sftp.get('/etl/deg-exacttarget/' + file.name, false, null);
+    const localPath = path.join(tempDir, file.name);
+    const remotePath = '/etl/deg-exacttarget/' + file.name;
+    const tempFile = await sftp.fastGet(remotePath, localPath);
+
+    console.log(tempFile);
+
     let ws = await S3.putObject({
-      Body: rs,
-      ContentLength: file.size,
+      Body: fs.createReadStream(localPath),
       Key: 'files/' + file.name
     }).promise();
 
     console.log(ws);
+
+    fs.unlinkSync(localPath);
   }
 
+  fs.rmdirSync(tempDir);
   await sftp.end();
 })();
