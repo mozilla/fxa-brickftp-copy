@@ -51,7 +51,7 @@ const dry_run = process.argv[2] == "--dry-run";
     return rf.name.includes('FXA_Email_Events') && !s3_file_list[rf.name] && s3_file_list[rf.name] != rf.size;
   });
 
-  console.log(files_to_download);
+  console.log(files_to_download.map(f => f.name));
 
   for (let file of files_to_download) {
     console.log('Writing %d bytes to s3://%s/files/%s', file.size, s3_bucket, file.name);
