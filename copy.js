@@ -12,6 +12,8 @@ const username = process.env.SFTP_USERNAME;
 const password = process.env.SFTP_PASSWORD;
 const private_key = process.env.SFTP_PRIVATE_KEY ? Buffer.from(process.env.SFTP_PRIVATE_KEY, 'base64') : null;
 
+const dry_run = process.argv[2] == "--dry-run";
+
 (async () => {
   let S3 = new AWS.S3({
     params: {
@@ -53,6 +55,10 @@ const private_key = process.env.SFTP_PRIVATE_KEY ? Buffer.from(process.env.SFTP_
 
   for (let file of files_to_download) {
     console.log('Writing %d bytes to s3://%s/files/%s', file.size, s3_bucket, file.name);
+    if (dry_run) {
+      continue;
+    }
+
     let rs = await sftp.get('/etl/deg-exacttarget/' + file.name, false, null);
     let ws = await S3.putObject({
       Body: rs,
